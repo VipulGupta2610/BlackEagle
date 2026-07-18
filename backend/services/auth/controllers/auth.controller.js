@@ -1,33 +1,35 @@
-import {getAuth} from "firebase-admin/auth"
-import {app} from "../config/firebase.js"
+import { getAuth } from "firebase-admin/auth"
+import { app } from "../config/firebase.js"
 import User from "../models/user.model.js";
+import redis from "../../../shared/redis/redis.js";
 
-export const login = async (req , res)=>{
+export const login = async (req, res) => {
     try {
-        const {token} = req.body;
+        const { token } = req.body;
         const decoded = await getAuth(app).verifyIdToken(token);
         let user = await User.findOne({
-            firebaseUID:decoded.uid
+            firebaseUID: decoded.uid
         });
-        if (!user){
+        if (!user) {
             user = await User.create({
-                firebaseUID:decoded.uid,
-                name:decoded.name,
-                email:decoded.email,
-                avatar:decoded.picture
+                firebaseUID: decoded.uid,
+                name: decoded.name,
+                email: decoded.email,
+                avatar: decoded.picture
             })
         }
         const sessionId = crypto.randomUUID()
-        res.cookie("session",sessionId,{
-            httpOnly:true,
-            secure:false,
-            sameSite:"strict",
-            maxAge:7*24*60*60*1000
+        await redis.set(`session-${sessionId}`, JSON.stringify({ userId: user._id, name: user.name, email: user.email, avatar: user.avatar }), "EX", 7 * 24 * 60 * 60)
+        res.cookie("session", sessionId, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
         })
-        return res.status(200).json({user})
+        return res.status(200).json({ user })
     } catch (error) {
         console.log("Error at login")
         console.log(error)
-        return res.status(500).json({message:"Login Error"})
+        return res.status(500).json({ message: "Login Error" })
     }
 }
