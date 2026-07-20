@@ -33,7 +33,7 @@ const Home = () => {
                             Please login to continue using the BlackEagle
                         </p>
                     </div>
-                    <button onClick={handleLogin} className='w-full flex items-center justify-center gap-3 py-[11px] rounded-2xl
+                    <button onClick={googleLogin} className='w-full flex items-center justify-center gap-3 py-[11px] rounded-2xl
 text-sm font-medium text-black/90 bg-white hover:bg-gray-200 transition-all duration-150
 cursor-pointer'>
                         <FcGoogle size={15} />
