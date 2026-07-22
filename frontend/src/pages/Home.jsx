@@ -8,7 +8,7 @@ const Home = () => {
 
     const handleLogin = async (token) => {
         try {
-            const { data } = await api.post("/auth/login", { token })
+            const { data } = await api.post("/api/auth/login", { token })
         } catch (error) {
             console.log("Error at handleLogin")
             console.log(error)
