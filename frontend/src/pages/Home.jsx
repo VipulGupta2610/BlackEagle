@@ -3,13 +3,16 @@ import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../..//utils/firebase.js';
 import api from "../../utils/axios.js"
 import { FcGoogle } from "react-icons/fc";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserdata } from '../redux/userSlice.js';
 
 const Home = () => {
     const { userData } = useSelector(state => state.user)
+    const dispatch = useDispatch()
     const handleLogin = async (token) => {
         try {
             const { data } = await api.post("/api/auth/login", { token })
+            dispatch(setUserdata(data))
         } catch (error) {
             console.log("Error at handleLogin")
             console.log(error)
