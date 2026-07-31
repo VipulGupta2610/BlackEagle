@@ -15,6 +15,7 @@ app.use(cors({
 }))
 app.use(cookieParser())
 app.use("/api/auth" , proxy((process.env.AUTH_SERVICE)))
+app.use("/api/chat" , proxy((process.env.CHAT_SERVICE)))
 app.get("/api/me",protect,getCurrentUser)
 app.get("/",(req , res)=>{
     res.status(200).json({message:"Gateway server running"})
