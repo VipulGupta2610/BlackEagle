@@ -30,11 +30,22 @@ export const getConversation = async (req , res)=>{
 export const saveMessage = async (req , res)=>{
     try {
         const {conversationId,role,content} = req.body;
-        const Message= await Message.create({
+        const message= await Message.create({
             conversationId,content,role
         })
         return res.status(200).json(message)
     } catch (error) {
         return res.status(500).json({message:"save message error" , error})
+    }
+}
+export const getMessage = async (req , res)=>{
+    try {
+        const {conversationId} = req.body;
+        const messages= await Message.find({
+            conversationId
+        })
+        return res.status(200).json(messages)
+    } catch (error) {
+        return res.status(500).json({message:"get message error" , error})
     }
 }
