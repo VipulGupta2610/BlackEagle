@@ -17,10 +17,10 @@ export const getConversation = async (req , res)=>{
     try {
         const userId = req.headers["x-user-id"]
         console.log(userId)
-        const conversation = await Conversation.find({
+        const conversations = await Conversation.find({
             userId:userId
-        })
-        return res.status(200).json(conversation)
+        }).sort({updatedAt:-1})
+        return res.status(200).json(conversations)
     } catch (error) {
         return res.status(500).json({message:"Get conversation error" , error})
     }
