@@ -26,6 +26,19 @@ export const getConversation = async (req , res)=>{
         return res.status(500).json({message:"Get conversation error" , error})
     }
 }
+export const updateConversation = async (req , res)=>{
+    try {
+       const {id,title} = req.body;
+        const conversation = await Conversation.findByIdAndUpdate(id,{
+            title
+        })
+        return res.status(200).json(conversation)
+    } catch (error) {
+        return res.status(500).json({message:"update conversation error" , error})
+    }
+}
+
+
 
 export const saveMessage = async (req , res)=>{
     try {
@@ -43,7 +56,7 @@ export const getMessage = async (req , res)=>{
         const {conversationId} = req.body;
         const messages= await Message.find({
             conversationId
-        })
+        }).sort({createdAt:-1})
         return res.status(200).json(messages)
     } catch (error) {
         return res.status(500).json({message:"get message error" , error})
