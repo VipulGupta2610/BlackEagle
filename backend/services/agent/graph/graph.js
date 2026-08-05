@@ -15,3 +15,6 @@ workflow.addNode("search" , searchAgent)
 workflow.addNode("pdf" , pdfAgent)
 workflow.addNode("ppt" , pptAgent)
 workflow.addNode("imageGen" ,  imageGenAgent)
+
+workflow.addEdge("__start__" , router)
+workflow.addConditionalEdges("router" , router)
