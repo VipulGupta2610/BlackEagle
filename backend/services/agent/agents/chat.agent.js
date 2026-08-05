@@ -1,3 +1,3 @@
-export const chat = async (req , res)=>{
-    
+export const chatAgent = async (req , res)=>{
+
 }

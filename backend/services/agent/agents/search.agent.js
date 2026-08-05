@@ -1,3 +1,3 @@
-export const search = async (req , res)=>{
+export const searchAgent = async (req , res)=>{
     
 }
