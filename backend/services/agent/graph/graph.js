@@ -18,7 +18,7 @@ workflow.addNode("pdf" , pdfAgent)
 workflow.addNode("ppt" , pptAgent)
 workflow.addNode("vision" ,  visionAgent)
 
-workflow.addEdge("__start__" , router)
+workflow.addEdge("__start__" , "router")
 workflow.addConditionalEdges("router" , (state)=>{
     switch (state.agent) {
         case "chat":
@@ -45,3 +45,5 @@ workflow.addConditionalEdges("router" , (state)=>{
     ppt:"ppt",
     vision:"vision"
 })
+
+workflow.addEdge("search","chat")
