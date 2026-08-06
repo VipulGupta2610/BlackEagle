@@ -5,7 +5,7 @@ import { chatAgent } from "../agents/chat.agent.js";
 import { searchAgent } from "../agents/search.agent.js";
 import { pdfAgent } from "../agents/pdf.agent.js";
 import { pptAgent } from "../agents/ppt.agent.js";
-import { imageGenAgent } from "../agents/imageGen.agnet.js";
+import { imageGenAgent, vision } from "../agents/vision.agent.js";
 import { codingAgent } from "../agents/coding.agent.js";
 
 const workflow = new StateGraph(agnetState)
@@ -16,7 +16,7 @@ workflow.addNode("search" , searchAgent)
 workflow.addNode("coding" , codingAgent)
 workflow.addNode("pdf" , pdfAgent)
 workflow.addNode("ppt" , pptAgent)
-workflow.addNode("vision" ,  imageGenAgent)
+workflow.addNode("vision" ,  visionAgent)
 
 workflow.addEdge("__start__" , router)
 workflow.addConditionalEdges("router" , (state)=>{
@@ -35,6 +35,6 @@ workflow.addConditionalEdges("router" , (state)=>{
             return "vision";
     
         default:
-            return "llm";
+            return "chat";
     }
 })
