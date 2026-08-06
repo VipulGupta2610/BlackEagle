@@ -37,4 +37,11 @@ workflow.addConditionalEdges("router" , (state)=>{
         default:
             return "chat";
     }
+},{
+    chat:"chat",
+    search:"search",
+    coding:"coding",
+    pdf:"pdf",
+    ppt:"ppt",
+    vision:"vision"
 })
