@@ -18,5 +18,12 @@ workflow.addNode("imageGen" ,  imageGenAgent)
 
 workflow.addEdge("__start__" , router)
 workflow.addConditionalEdges("router" , (state)=>{
+    switch (state.agent) {
+        case value:
+            
+            break;
     
+        default:
+            break;
+    }
 })
