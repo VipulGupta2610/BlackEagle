@@ -5,5 +5,4 @@ const groq = new ChatGroq({
     temperature: 0,
     maxTokens: undefined,
     maxRetries: 2,
-    // other params...
 })
