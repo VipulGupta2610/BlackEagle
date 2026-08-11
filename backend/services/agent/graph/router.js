@@ -55,7 +55,7 @@ export const router = async (state) => {
     vision
 
     User query:
-
-
+    ${state.prompt}
     `
+    const res = await llm.invoke(prompt)
 }
