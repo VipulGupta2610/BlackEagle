@@ -57,5 +57,9 @@ export const router = async (state) => {
     User query:
     ${state.prompt}
     `
-    const res = await llm.invoke(prompt)
+    const response = await llm.invoke(prompt)
+    return {
+        ...state,
+        agent: response.content.trim().toLowerCase()
+    }
 }
