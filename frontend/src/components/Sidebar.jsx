@@ -1,11 +1,265 @@
-import React from 'react'
+import React, { useState } from 'react';
+import {
+  RiRobot2Line,
+  RiAddCircleLine,
+  RiHistoryLine,
+  RiSettings4Line,
+  RiSearchLine,
+  RiMessage3Line,
+  RiDeleteBinLine,
+  RiMenuFoldLine,
+  RiMenuUnfoldLine,
+  RiDatabase2Line,
+  RiBookmarkLine,
+  RiQuestionLine,
+  RiUser3Line,
+} from 'react-icons/ri';
+import { HiOutlineSparkles } from 'react-icons/hi2';
+import { useSelector } from 'react-redux';
+
+const CHATS = [
+  { id: 1, title: 'Quantum circuit optimization', time: 'Just now', active: true },
+  { id: 2, title: 'Python async event loop', time: '2h ago', active: false },
+  { id: 3, title: 'System architecture review', time: 'Yesterday', active: false },
+  { id: 4, title: 'Database schema design', time: '3d ago', active: false },
+  { id: 5, title: 'React performance tuning', time: '5d ago', active: false },
+  { id: 6, title: 'Neural network training run', time: '1w ago', active: false },
+];
 
 function Sidebar() {
+  const [collapsed, setCollapsed] = useState(false);
+  const [search, setSearch] = useState('');
+  const { userData } = useSelector(state => state.user);
+
+  const filtered = CHATS.filter(c =>
+    c.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div>
-      
-    </div>
-  )
+    <aside
+      style={{
+        width: collapsed ? '68px' : '260px',
+        transition: 'width 240ms cubic-bezier(0.4,0,0.2,1)',
+        flexShrink: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        background: 'var(--be-surface)',
+        borderRight: '1px solid var(--be-border)',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      {/* Subtle top-left corner glow */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, width: '120px', height: '120px',
+        background: 'radial-gradient(circle at 0% 0%, rgba(212,160,23,0.08) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+
+      {/* Header */}
+      <div style={{
+        padding: collapsed ? '16px 12px' : '16px 14px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        justifyContent: collapsed ? 'center' : 'space-between',
+        borderBottom: '1px solid var(--be-border)',
+        minHeight: '64px',
+      }}>
+        {!collapsed && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+            <div style={{
+              width: '32px', height: '32px', borderRadius: '8px', flexShrink: 0,
+              background: 'linear-gradient(135deg, #d4a017, #f0bc2a)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 0 12px rgba(212,160,23,0.4)',
+            }}>
+              <RiRobot2Line size={17} color="#080a0e" />
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div className="font-brand" style={{ fontSize: '17px', fontWeight: 700, letterSpacing: '0.04em', color: '#f0bc2a', lineHeight: 1 }}>
+                BlackEagle
+              </div>
+              <div style={{ fontSize: '10px', color: 'var(--be-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                Intelligence
+              </div>
+            </div>
+          </div>
+        )}
+        {collapsed && (
+          <div style={{
+            width: '32px', height: '32px', borderRadius: '8px',
+            background: 'linear-gradient(135deg, #d4a017, #f0bc2a)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 0 12px rgba(212,160,23,0.4)',
+          }}>
+            <RiRobot2Line size={17} color="#080a0e" />
+          </div>
+        )}
+        <button
+          onClick={() => setCollapsed(v => !v)}
+          className="be-btn-ghost"
+          style={{ padding: '6px', borderRadius: '7px', fontSize: '15px', border: 'none', flexShrink: 0 }}
+          title={collapsed ? 'Expand' : 'Collapse'}
+        >
+          {collapsed ? <RiMenuUnfoldLine size={15} /> : <RiMenuFoldLine size={15} />}
+        </button>
+      </div>
+
+      {/* New Chat */}
+      <div style={{ padding: collapsed ? '12px 10px' : '12px', borderBottom: '1px solid var(--be-border)' }}>
+        <button
+          className="be-btn-gold"
+          style={{
+            width: '100%',
+            padding: collapsed ? '9px' : '9px 14px',
+            borderRadius: '9px',
+            fontSize: '13px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            gap: '8px',
+          }}
+        >
+          <RiAddCircleLine size={16} />
+          {!collapsed && <span>New conversation</span>}
+        </button>
+      </div>
+
+      {/* Search */}
+      {!collapsed && (
+        <div style={{ padding: '10px 12px' }}>
+          <div style={{ position: 'relative' }}>
+            <RiSearchLine
+              size={13}
+              style={{
+                position: 'absolute', left: '10px', top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'var(--be-text-muted)',
+              }}
+            />
+            <input
+              className="be-input"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search chats…"
+              style={{
+                width: '100%', padding: '7px 10px 7px 30px',
+                borderRadius: '8px', fontSize: '12.5px',
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Chat list */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: collapsed ? '8px' : '4px 8px 8px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+        {!collapsed && (
+          <div style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--be-text-muted)', padding: '6px 6px 4px', marginBottom: '2px' }}>
+            Recent
+          </div>
+        )}
+
+        {filtered.map(chat => (
+          collapsed ? (
+            <button
+              key={chat.id}
+              title={chat.title}
+              className={`sidebar-item ${chat.active ? 'active' : ''}`}
+              style={{ padding: '9px', justifyContent: 'center', width: '100%' }}
+            >
+              <RiMessage3Line size={16} />
+            </button>
+          ) : (
+            <div
+              key={chat.id}
+              className={`sidebar-item ${chat.active ? 'active' : ''}`}
+              style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '2px', padding: '8px 12px' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%' }}>
+                <span
+                  className="sidebar-dot"
+                  style={{
+                    width: '6px', height: '6px', borderRadius: '50%', flexShrink: 0,
+                    background: chat.active ? 'var(--be-gold-bright)' : 'var(--be-text-muted)',
+                    transition: 'all 150ms',
+                  }}
+                />
+                <span style={{ fontSize: '13px', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                  {chat.title}
+                </span>
+                <button
+                  className="be-btn-ghost"
+                  style={{ padding: '2px 4px', border: 'none', borderRadius: '4px', fontSize: '11px', opacity: 0, transition: 'opacity 150ms', flexShrink: 0 }}
+                  onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+                  onMouseLeave={e => e.currentTarget.style.opacity = '0'}
+                >
+                  <RiDeleteBinLine size={12} />
+                </button>
+              </div>
+              <span style={{ fontSize: '11px', color: 'var(--be-text-muted)', paddingLeft: '14px' }}>{chat.time}</span>
+            </div>
+          )
+        ))}
+      </div>
+
+      {/* Bottom nav */}
+      <div style={{ borderTop: '1px solid var(--be-border)', padding: collapsed ? '10px 8px' : '10px 8px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+        {[
+          { icon: <RiHistoryLine size={16}/>, label: 'History' },
+          { icon: <RiBookmarkLine size={16}/>, label: 'Saved' },
+          { icon: <RiDatabase2Line size={16}/>, label: 'Memory' },
+          { icon: <RiQuestionLine size={16}/>, label: 'Help' },
+          { icon: <RiSettings4Line size={16}/>, label: 'Settings' },
+        ].map(({ icon, label }) => (
+          <button
+            key={label}
+            title={label}
+            className="sidebar-item"
+            style={{ justifyContent: collapsed ? 'center' : 'flex-start' }}
+          >
+            {icon}
+            {!collapsed && <span style={{ fontSize: '13px' }}>{label}</span>}
+          </button>
+        ))}
+
+        {/* User */}
+        <div className="be-divider" style={{ margin: '6px 0' }} />
+        <div
+          className="sidebar-item"
+          style={{ justifyContent: collapsed ? 'center' : 'flex-start' }}
+          title={userData?.name || 'Profile'}
+        >
+          {userData?.picture ? (
+            <img
+              src={userData.picture}
+              alt="avatar"
+              style={{ width: '24px', height: '24px', borderRadius: '50%', border: '1.5px solid var(--be-gold-dim)', objectFit: 'cover', flexShrink: 0 }}
+            />
+          ) : (
+            <div style={{
+              width: '24px', height: '24px', borderRadius: '50%',
+              background: 'linear-gradient(135deg, var(--be-gold-dim), var(--be-gold))',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}>
+              <RiUser3Line size={13} color="#080a0e" />
+            </div>
+          )}
+          {!collapsed && (
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: '12.5px', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {userData?.name || 'Guest'}
+              </div>
+              <div style={{ fontSize: '10.5px', color: 'var(--be-text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {userData?.email || 'Not signed in'}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </aside>
+  );
 }
 
-export default Sidebar
+export default Sidebar;
