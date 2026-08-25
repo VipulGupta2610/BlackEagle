@@ -10,7 +10,7 @@ const conversationSlice = createSlice({
             state.conversations = action.payload
         },
         addConversation:(state,action)=>{
-            
+            state.conversations.unshift(action)
         }
     }
 })
