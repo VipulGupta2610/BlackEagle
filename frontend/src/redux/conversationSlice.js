@@ -6,11 +6,11 @@ const conversationSlice = createSlice({
         conversations:[],
     },
     reducers:{
-        setUserdata:(state, action)=>{
-            state.userData = action.payload;
+        setConversation:(state , action)=>{
+            state.conversations = action.payload
         }
     }
 })
 
-export const {setUserdata} = userSlice.actions;
-export default userSlice.reducer;
+export const {} = conversationSlice.actions;
+export default conversationSlice.reducer;
