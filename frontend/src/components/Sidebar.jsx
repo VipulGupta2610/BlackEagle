@@ -18,7 +18,8 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useDispatch, useSelector } from 'react-redux';
 import { getConversations } from '../features/getConversations.js';
 import { useDispatch } from 'react-redux';
-import { setConversation } from '../redux/conversationSlice.js';
+import { addConversation, setConversation } from '../redux/conversationSlice.js';
+import { createConversation } from '../features/createConversation.js';
 
 const CHATS = [
   { id: 1, title: 'Quantum circuit optimization', time: 'Just now', active: true },
@@ -32,6 +33,7 @@ const CHATS = [
 function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const dispatch = useDispatch()
+  const {conversations}=useSelector(state=>state.conversation)
   const [search, setSearch] = useState('');
   const { userData } = useSelector(state => state.user);
 
@@ -45,6 +47,11 @@ function Sidebar() {
       dispatch(setConversation(data))
     }
   }, []);
+
+  const handleCreateConversation=async()=>{
+    const data  = await createConversation()
+    dispatch(addConversation(data))
+  }
 
   return (
     <aside

@@ -11,6 +11,9 @@ const conversationSlice = createSlice({
         },
         addConversation:(state,action)=>{
             state.conversations.unshift(action)
+        },
+        setSelectConversation:(state,action)=>{
+            state.conversations.unshift(action.payload)
         }
     }
 })
