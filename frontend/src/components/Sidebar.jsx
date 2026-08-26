@@ -15,7 +15,10 @@ import {
   RiUser3Line,
 } from 'react-icons/ri';
 import { HiOutlineSparkles } from 'react-icons/hi2';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getConversations } from '../features/getConversations.js';
+import { useDispatch } from 'react-redux';
+import { setConversation } from '../redux/conversationSlice.js';
 
 const CHATS = [
   { id: 1, title: 'Quantum circuit optimization', time: 'Just now', active: true },
@@ -28,12 +31,20 @@ const CHATS = [
 
 function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const dispatch = useDispatch()
   const [search, setSearch] = useState('');
   const { userData } = useSelector(state => state.user);
 
   const filtered = CHATS.filter(c =>
     c.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  useEffect(() => {
+    const getConv = async () => {
+      const data = await getConversations()
+      dispatch(setConversation(data))
+    }
+  }, [input]);
 
   return (
     <aside
@@ -207,11 +218,11 @@ function Sidebar() {
       {/* Bottom nav */}
       <div style={{ borderTop: '1px solid var(--be-border)', padding: collapsed ? '10px 8px' : '10px 8px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
         {[
-          { icon: <RiHistoryLine size={16}/>, label: 'History' },
-          { icon: <RiBookmarkLine size={16}/>, label: 'Saved' },
-          { icon: <RiDatabase2Line size={16}/>, label: 'Memory' },
-          { icon: <RiQuestionLine size={16}/>, label: 'Help' },
-          { icon: <RiSettings4Line size={16}/>, label: 'Settings' },
+          { icon: <RiHistoryLine size={16} />, label: 'History' },
+          { icon: <RiBookmarkLine size={16} />, label: 'Saved' },
+          { icon: <RiDatabase2Line size={16} />, label: 'Memory' },
+          { icon: <RiQuestionLine size={16} />, label: 'Help' },
+          { icon: <RiSettings4Line size={16} />, label: 'Settings' },
         ].map(({ icon, label }) => (
           <button
             key={label}
