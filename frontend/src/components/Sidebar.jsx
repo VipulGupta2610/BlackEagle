@@ -44,7 +44,7 @@ function Sidebar() {
       const data = await getConversations()
       dispatch(setConversation(data))
     }
-  }, [input]);
+  }, []);
 
   return (
     <aside
