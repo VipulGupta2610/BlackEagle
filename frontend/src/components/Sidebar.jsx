@@ -33,7 +33,8 @@ const CHATS = [
 function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const dispatch = useDispatch()
-  const {conversations}=useSelector(state=>state.conversation)
+  const {imageError , setImageError} = useState()
+  const {conversations , selectedConversation}=useSelector(state=>state.conversation)
   const [search, setSearch] = useState('');
   const { userData } = useSelector(state => state.user);
 

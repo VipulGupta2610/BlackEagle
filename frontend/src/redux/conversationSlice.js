@@ -12,11 +12,11 @@ const conversationSlice = createSlice({
         addConversation:(state,action)=>{
             state.conversations.unshift(action)
         },
-        setSelectConversation:(state,action)=>{
-            state.conversations.unshift(action.payload)
+        setSelectedConversation:(state,action)=>{
+            state.selectedConversation.unshift(action.payload)
         }
     }
 })
 
-export const {setConversation , addConversation} = conversationSlice.actions;
+export const {setConversation , addConversation , setSelectedConversation} = conversationSlice.actions;
 export default conversationSlice.reducer;
