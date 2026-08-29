@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const conversationSchema = new mongoose.Schema({
-    ttile:{
+    title:{
         type:String,
         default:"New chat"
     },

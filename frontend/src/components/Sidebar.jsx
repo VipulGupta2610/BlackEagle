@@ -18,17 +18,10 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useDispatch, useSelector } from 'react-redux';
 import { getConversations } from '../features/getConversations.js';
 import { useDispatch } from 'react-redux';
-import { addConversation, setConversation } from '../redux/conversationSlice.js';
+import { addConversation, setConversation, setSelectedConversation } from '../redux/conversationSlice.js';
 import { createConversation } from '../features/createConversation.js';
 
-const CHATS = [
-  { id: 1, title: 'Quantum circuit optimization', time: 'Just now', active: true },
-  { id: 2, title: 'Python async event loop', time: '2h ago', active: false },
-  { id: 3, title: 'System architecture review', time: 'Yesterday', active: false },
-  { id: 4, title: 'Database schema design', time: '3d ago', active: false },
-  { id: 5, title: 'React performance tuning', time: '5d ago', active: false },
-  { id: 6, title: 'Neural network training run', time: '1w ago', active: false },
-];
+// We'll dynamically render conversations instead of using hardcoded CHATS
 
 function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -38,8 +31,18 @@ function Sidebar() {
   const [search, setSearch] = useState('');
   const { userData } = useSelector(state => state.user);
 
-  const filtered = CHATS.filter(c =>
-    c.title.toLowerCase().includes(search.toLowerCase())
+  const formatTime = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const diffInHours = (new Date() - date) / (1000 * 60 * 60);
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${Math.floor(diffInHours)}h ago`;
+    if (diffInHours < 48) return 'Yesterday';
+    return `${Math.floor(diffInHours / 24)}d ago`;
+  };
+
+  const filtered = (conversations || []).filter(c =>
+    (c.title || c.ttile || 'New chat').toLowerCase().includes(search.toLowerCase())
   );
 
   useEffect(() => {
@@ -181,33 +184,37 @@ function Sidebar() {
           </div>
         )}
 
-        {filtered.map(chat => (
-          collapsed ? (
+        {filtered.map(chat => {
+          const isActive = selectedConversation?._id === chat._id;
+          const displayTitle = chat.title || chat.ttile || 'New chat';
+          return collapsed ? (
             <button
-              key={chat.id}
-              title={chat.title}
-              className={`sidebar-item ${chat.active ? 'active' : ''}`}
+              key={chat._id}
+              title={displayTitle}
+              className={`sidebar-item ${isActive ? 'active' : ''}`}
               style={{ padding: '9px', justifyContent: 'center', width: '100%' }}
+              onClick={() => dispatch(setSelectedConversation(chat))}
             >
               <RiMessage3Line size={16} />
             </button>
           ) : (
             <div
-              key={chat.id}
-              className={`sidebar-item ${chat.active ? 'active' : ''}`}
-              style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '2px', padding: '8px 12px' }}
+              key={chat._id}
+              className={`sidebar-item ${isActive ? 'active' : ''}`}
+              style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '2px', padding: '8px 12px', cursor: 'pointer' }}
+              onClick={() => dispatch(setSelectedConversation(chat))}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%' }}>
                 <span
                   className="sidebar-dot"
                   style={{
                     width: '6px', height: '6px', borderRadius: '50%', flexShrink: 0,
-                    background: chat.active ? 'var(--be-gold-bright)' : 'var(--be-text-muted)',
+                    background: isActive ? 'var(--be-gold-bright)' : 'var(--be-text-muted)',
                     transition: 'all 150ms',
                   }}
                 />
                 <span style={{ fontSize: '13px', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
-                  {chat.title}
+                  {displayTitle}
                 </span>
                 <button
                   className="be-btn-ghost"
@@ -218,10 +225,10 @@ function Sidebar() {
                   <RiDeleteBinLine size={12} />
                 </button>
               </div>
-              <span style={{ fontSize: '11px', color: 'var(--be-text-muted)', paddingLeft: '14px' }}>{chat.time}</span>
+              <span style={{ fontSize: '11px', color: 'var(--be-text-muted)', paddingLeft: '14px' }}>{formatTime(chat.updatedAt || chat.createdAt)}</span>
             </div>
           )
-        ))}
+        })}
       </div>
 
       {/* Bottom nav */}
