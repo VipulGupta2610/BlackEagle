@@ -47,7 +47,8 @@ function Sidebar() {
       const data = await getConversations()
       dispatch(setConversation(data))
     }
-  }, []);
+    getConv()
+  }, [userData?._id]);
 
   const handleCreateConversation=async()=>{
     const data  = await createConversation()
