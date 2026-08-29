@@ -134,6 +134,7 @@ function Sidebar() {
       <div style={{ padding: collapsed ? '12px 10px' : '12px', borderBottom: '1px solid var(--be-border)' }}>
         <button
           className="be-btn-gold"
+          onClick={handleCreateConversation}
           style={{
             width: '100%',
             padding: collapsed ? '9px' : '9px 14px',
