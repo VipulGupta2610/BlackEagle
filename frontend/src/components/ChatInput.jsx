@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ChatInput = () => {
+
+  const [value, setvalue] = useState("");
+
   return (
     <div>
       
