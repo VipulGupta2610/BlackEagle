@@ -15,6 +15,7 @@ const ChatInput = () => {
     const payload = { prompt: value.trim(), conversationId: selectedConversation?._id };
     dispatch(addMessage({role:"user" , content:value.trim()}))
     const data = await sendMessage(payload);
+    dispatch(addMessage({role:"assistant" , content:data}))
   };
   return (
     <div>
