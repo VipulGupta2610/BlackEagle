@@ -17,7 +17,6 @@ import {
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useDispatch, useSelector } from 'react-redux';
 import { getConversations } from '../features/getConversations.js';
-import { useDispatch } from 'react-redux';
 import { addConversation, setConversation, setSelectedConversation } from '../redux/conversationSlice.js';
 import { createConversation } from '../features/createConversation.js';
 
