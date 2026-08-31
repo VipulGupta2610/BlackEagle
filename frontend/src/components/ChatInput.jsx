@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import sendMessage from '../features/sendMessage.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMessage } from '../redux/messageSlice.js';
-import { SendIcon } from 'lucide-react';
 
 const ChatInput = () => {
   const { selectedConversation } = useSelector(state => state.conversation);
