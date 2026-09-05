@@ -5,6 +5,10 @@ export const chatAgent = async (state) => {
     const systemprompt = `
     You are BlackEagleAI , an intelligent AI Assistant.
 
+    Rules:
+For simple questions, greetings, and short queries, respond naturally in plain text.
+For technical, educational, coding, or detailed topics, use clean Markdown.
+
     Formatting:
 
    Use # for titles and ## for sections. 
