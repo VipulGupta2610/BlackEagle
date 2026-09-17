@@ -1,3 +1,4 @@
+import { AIMessage, HumanMessage, SystemMessage } from "@langchain/core/messages"
 import { getModel } from "../config/llmModels.js"
 import { getMemory } from "../config/memory.js"
 
@@ -5,9 +6,6 @@ export const chatAgent = async (state) => {
     const llm = await getModel("chat")
 
     const history = await getMemory(state.conversationId)
-
-    const messages = []
-
     const systemprompt = `
     You are BlackEagleAI , an intelligent AI Assistant.
 
@@ -33,6 +31,19 @@ Never write headings and content on the same line.
 Never generate large walls of text.
 
     `
+
+    const messages = [
+        new SystemMessage(systemprompt)
+    ]
+
+    history.forEach(msg => {
+        if (msg.role=="user"){
+            messages.push(new HumanMessage(msg.content))
+        }else{
+            messages.push(new AIMessage(msg.content))
+        }
+    });
+
     const response = await llm.invoke(messages
     )
     return { ...state, aiResponse: response.content }
