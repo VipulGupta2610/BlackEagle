@@ -12,3 +12,5 @@ export const getMemory = async (conversationId) => {
 
     return messages
 }
+
+
