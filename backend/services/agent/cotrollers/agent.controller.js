@@ -13,6 +13,9 @@ export const agent = async (req, res) => {
             prompt , conversationId
         })
         const response = result.aiResponse
+
+         await addMessage({conversationId,role:"assistant",response})
+
           await axios.post(`${process.env.CHAT_SERVICE}/save-message`, { conversationId: conversationId, role: "assistant", content: response })
         return res.status(200).json(response)
     } catch (error) {
