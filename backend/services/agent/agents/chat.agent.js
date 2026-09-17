@@ -44,7 +44,8 @@ Never generate large walls of text.
         }
     });
 
-    const response = await llm.invoke(messages
-    )
+    messages.push(new HumanMessage(state.prompt))
+
+    const response = await llm.invoke(messages)
     return { ...state, aiResponse: response.content }
 }
