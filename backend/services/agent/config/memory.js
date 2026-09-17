@@ -19,4 +19,8 @@ export const getMessage = async (conversationId,role,content)=>{
     const rawMessages = await redis.get(key)
     const messages =rawMessages? JSON.parse(rawMessages):[]
     messages.push({role , content})
+    if (messages.length>20){
+        messages.shift()
+    }
+    await redis.set(key,JSON.stringify(messages))
 }
