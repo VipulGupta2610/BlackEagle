@@ -15,5 +15,8 @@ export const getMemory = async (conversationId) => {
 
 
 export const getMessage = async (conversationId,role,content)=>{
-    
+    const key=`messages-${conversationId}`
+    const rawMessages = await redis.get(key)
+    const messages =rawMessages? JSON.parse(rawMessages):[]
+    messages.push({role , content})
 }
