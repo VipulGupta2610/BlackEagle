@@ -14,3 +14,6 @@ export const getMemory = async (conversationId) => {
 }
 
 
+export const getMessage = async (conversationId,role,content)=>{
+    
+}
