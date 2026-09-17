@@ -1,7 +1,13 @@
 import { getModel } from "../config/llmModels.js"
+import { getMemory } from "../config/memory.js"
 
 export const chatAgent = async (state) => {
     const llm = await getModel("chat")
+
+    const history = await getMemory(state.conversationId)
+
+    const messages = []
+
     const systemprompt = `
     You are BlackEagleAI , an intelligent AI Assistant.
 
@@ -27,15 +33,7 @@ Never write headings and content on the same line.
 Never generate large walls of text.
 
     `
-    const response = await llm.invoke([{
-        "role": "system",
-        "content": systemprompt,
-
-    },
-    {
-        "role": "human",
-        "content": state.prompt
-    }
-    ])
+    const response = await llm.invoke(messages
+    )
     return { ...state, aiResponse: response.content }
 }
