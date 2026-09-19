@@ -7,6 +7,7 @@ import { addConversation, setConvTitle, setSelectedConversation ,setConvTitle} f
 import { updateConversation } from '../features/updateConversation.js';
 
 const ChatInput = () => {
+  const [selectedAgent, setselectedAgent] = useState("Auto");
   const { selectedConversation } = useSelector(state => state.conversation);
   const [value, setValue] = useState("");
   const dispatch = useDispatch();
@@ -36,6 +37,34 @@ const ChatInput = () => {
     const data = await sendMessage(payload);
     dispatch(addMessage({ role: "assistant", content: data }));
   };
+
+  const agents = [
+    {
+      id:"auto",
+      icon:Zap,
+      label:"Auto"
+    },
+    {
+      id:"auto",
+      icon:Zap,
+      label:"Chat"
+    },
+    {
+      id:"auto",
+      icon:Zap,
+      label:"Coding"
+    },
+    {
+      id:"auto",
+      icon:Zap,
+      label:"Search"
+    },
+    {
+      id:"auto",
+      icon:Zap,
+      label:"Auto"
+    },
+  ]
 
   return (
     <div className="w-full bg-transparent p-4 flex justify-center items-center backdrop-blur-sm relative z-20">
