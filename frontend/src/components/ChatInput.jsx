@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import sendMessage from '../features/sendMessage.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMessage } from '../redux/messageSlice.js';
+import { createConversation } from '../features/createConversation.js';
 
 const ChatInput = () => {
   const { selectedConversation } = useSelector(state => state.conversation);
@@ -12,7 +13,12 @@ const ChatInput = () => {
     e.preventDefault();
     if (!value.trim()) return;
 
+     if (!selectedConversation){
+     const conv  = await createConversation();
+     }
+
     const payload = { prompt: value.trim(), conversationId: selectedConversation?._id };
+
     dispatch(addMessage({ role: "user", content: value.trim() }));
     setValue("");
     
