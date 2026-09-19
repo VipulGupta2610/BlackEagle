@@ -3,7 +3,7 @@ import sendMessage from '../features/sendMessage.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMessage } from '../redux/messageSlice.js';
 import { createConversation } from '../features/createConversation.js';
-import { addConversation, setSelectedConversation } from '../redux/conversationSlice.js';
+import { addConversation, setConvTitle, setSelectedConversation ,setConvTitle} from '../redux/conversationSlice.js';
 import { updateConversation } from '../features/updateConversation.js';
 
 const ChatInput = () => {
@@ -24,6 +24,7 @@ const ChatInput = () => {
 
     if (conversation.title == "New Chat"){
       const conv = await updateConversation({id:conversation?._id,title:value.trim()})
+      dispatch(setConvTitle({conversationId:conversation._id,title:value.slice(0,40)}))
     }
 
     const payload = { prompt: value.trim(), conversationId: selectedConversation?._id };
