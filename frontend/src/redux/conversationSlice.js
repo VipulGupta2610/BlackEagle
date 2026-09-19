@@ -15,6 +15,10 @@ const conversationSlice = createSlice({
         },
         setSelectedConversation:(state,action)=>{
             state.selectedConversation = action.payload
+        },
+        setConvTitle:(state,action)=>{
+            const title = action.payload
+            state.
         }
     }
 })
